@@ -1,0 +1,49 @@
+.video-controller {
+  position: relative;
+}
+
+.video-controller video {
+  transition: opacity 0.2s ease;
+  display: block;
+  opacity: 0;
+}
+
+.video-controller--fullscreen,
+.video-controller__cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.video-controller--fullscreen video {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+}
+
+.video-controller__cover {
+  transition: opacity 0.2s ease;
+  opacity: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+
+.video-controller.is-loaded video {
+  opacity: 1;
+}
+
+.video-controller.is-error .video-controller__cover,
+.video-controller.is-unsuported .video-controller__cover {
+  opacity: 1;
+}
+
+.video-controller.is-error video,
+.video-controller.is-unsuported video  {
+  opacity: 0;
+}

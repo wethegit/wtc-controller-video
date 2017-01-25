@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "A class to handle the different browser support for videos, specially fullscreen ambient videos.",
   "main": "dist/wtc-controller-video.js",
+  "style": "dist/wtc-controller-video.css",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src/ --presets babel-preset-es2015 --out-dir dist",

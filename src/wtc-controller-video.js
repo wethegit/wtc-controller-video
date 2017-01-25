@@ -76,7 +76,7 @@ class Video extends ElementController {
       this.showFallback()
       this.element.removeEventListener('error', onError)
       this.removeGlobalListeners()
-      console.warn('Video didn\'t load: ', e.error)
+      console.warn('Video didn\'t load: ', e.error, '\nShowing fallback instead.')
     }
 
     this.element.addEventListener('error', onError, false)
@@ -89,8 +89,10 @@ class Video extends ElementController {
       this.videoRatio = (this.videoWidth / this.videoHeight).toFixed(2)
 
       // set the resize event
-      this.resize()
-      this.addGlobalListener(window, 'resize', ()=> {this.resize()})
+      if (this.options.fullscreen) {
+        this.resize()
+        this.addGlobalListener(window, 'resize', ()=> {this.resize()})
+      }
 
       // add classes
       _u.addClass('is-loaded', this.wrapper)
@@ -107,6 +109,15 @@ class Video extends ElementController {
     return this
   }
 
+  /**
+   * Helper function to deal with global events
+   * adding and removing global events using these function
+   * helps avoid memory leaks.
+   * @param {DOMNode}  obj        The element to attach the event, usually window
+   * @param {String}  evt        The event name
+   * @param {Function}  listener   The function to be called when the event fires
+   * @param {Boolean} useCapture Same as the original addEventListener
+   */
   addGlobalListener(obj, evt, listener, useCapture = false) {
     this.events.push({
       obj: obj,
@@ -117,16 +128,27 @@ class Video extends ElementController {
     obj.addEventListener(evt, listener, useCapture)
   }
 
+  /**
+   * Helper function to remove the added global events
+   */
   removeGlobalListeners() {
     this.events.forEach(function(eventRef) {
       eventRef.obj.removeEventListener(eventRef.evt, eventRef.listener, eventRef.useCapture);
     });
   }
 
+  /**
+   * Show the video cover image.
+   * @param  {String} reason String to be added to the class on the wrapper
+   */
   showFallback(reason = 'error') {
     _u.addClass(`is-${reson}`, this.wrapper)
   }
 
+  /**
+   * Resize the video based on the ratio
+   * @return {[type]} [description]
+   */
   resize() {
     if(this.elementExistsInDOM()) {
       // Get the container's computed styles
@@ -172,25 +194,41 @@ class Video extends ElementController {
     }
   }
 
+  /**
+   * Helper function to get the name of a tag
+   * @param  {DOMNode} el Element
+   * @return {String}     Tag name
+   */
   static getTagName(el) {
     return el.tagName.toLowerCase();
   }
 
+  /**
+   * Check is passed element is a video
+   * @param  {DOMNode}  el Element
+   * @return {Boolean}     True if it's a video
+   */
   static isVideo(el) {
     return (Video.getTagName(el) === 'video') ? true : false;
   }
 
+  /**
+   * Loads video and fire callback
+   * @param  {DOMNode}   item     Video
+   * @param  {Function} callback  Callback function
+   * @return {DOMNode}            Returns the passed video
+   */
   static preload(item, callback) {
-    let videoTag = item;
+    let videoTag = item
 
     if (callback) {
       if (videoTag.readyState >= videoTag.HAVE_ENOUGH_DATA) {
-        callback(item);
+        callback(item)
       }
       else {
         let handler = function(){
           callback(item);
-          videoTag.removeEventListener('canplay', handler);
+          videoTag.removeEventListener('canplay', handler)
         }
 
         videoTag.addEventListener('canplay', handler)
@@ -198,11 +236,11 @@ class Video extends ElementController {
     }
 
     videoTag.load()
+
+    return videoTag
   }
 }
 
 ExecuteControllers.registerController(Video, 'Video');
 
 export default Video;
-
-ExecuteControllers.instanciateAll();

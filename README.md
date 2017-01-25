@@ -1,2 +1,51 @@
 # wtc-controller-video
 A class to handle the different browser support for videos, specially fullscreen ambient videos.
+
+## Install
+```sh
+$ npm install wtc-controller-video --save
+```
+
+## Usage
+#### Using ExecuteControllers
+Please refer to the [ExecuteController docs](https://github.com/wethegit/wtc-controller-element#how-to-instanciate-controllers).
+
+### Add the CSS and JS
+```html
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <title>Demo</title>
+    <link rel="stylesheet" href="wtc-controller-video.css">
+  </head>
+  <body>
+    <script src="bundle.js"></script>
+  </body>
+  </html>
+```
+
+### Instanciate the class on an element
+```javascript
+import Video from 'wtc-controller-video'
+
+let myFullsreenVideo = new Video(document.querySelector('video'), {
+  fullscreen: true,
+  fallback: 'poster.png'
+  onLoad: function() {
+    // Script to be executed on video load
+  }
+}
+```
+
+## Options
+You can use data attributes or pass the options when instanciating.
+PS: When using **ExecuteControllers** you **MUST** use data attributes, also, the onLoad hook is not available.
+```text
+fullscreen: Boolean. Default = false
+Sets the video to be fullscreen
+
+fallback: String. Default = poster from video
+Sets the fallback image, this will be shown when there's an error with the video.
+
+onLoad: Function(null)     | Fires when the video loads.
+```
