@@ -7,11 +7,11 @@ $ npm install wtc-controller-video --save
 ```
 
 ## Usage
+### Example
+You can find an example inside [dist/demo](https://github.com/wethegit/wtc-controller-video/tree/master/dist/demo).
+
 #### Using ExecuteControllers
 Please refer to the [ExecuteController docs](https://github.com/wethegit/wtc-controller-element#how-to-instanciate-controllers).
-
-## Example
-You can find an example inside [dist/demo](https://github.com/wethegit/wtc-controller-video/tree/master/dist/demo).
 
 ### Add the CSS and JS
 ```html
