@@ -10,6 +10,9 @@ $ npm install wtc-controller-video --save
 #### Using ExecuteControllers
 Please refer to the [ExecuteController docs](https://github.com/wethegit/wtc-controller-element#how-to-instanciate-controllers).
 
+## Example
+You can find an example inside [dist/demo](https://github.com/wethegit/wtc-controller-video/tree/master/dist/demo).
+
 ### Add the CSS and JS
 ```html
   <!DOCTYPE html>
@@ -28,13 +31,7 @@ Please refer to the [ExecuteController docs](https://github.com/wethegit/wtc-con
 ```javascript
 import Video from 'wtc-controller-video'
 
-let myFullsreenVideo = new Video(document.querySelector('video'), {
-  fullscreen: true,
-  fallback: 'poster.png'
-  onLoad: function() {
-    // Script to be executed on video load
-  }
-}
+let myFullsreenVideo = new Video(document.querySelector('video')
 ```
 
 ## Options
@@ -44,8 +41,9 @@ PS: When using **ExecuteControllers** you **MUST** use data attributes, also, th
 fullscreen: Boolean. Default = false
 Sets the video to be fullscreen
 
-fallback: String. Default = poster from video
+fallback: String. Default = poster or data-fallback attributes
 Sets the fallback image, this will be shown when there's an error with the video.
 
-onLoad: Function(null)     | Fires when the video loads.
+onLoad: Function. Default = null
+Fires when the video loads.
 ```
