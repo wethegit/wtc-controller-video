@@ -107,7 +107,7 @@ var Video = function (_ElementController) {
       _this.showFallback();
       _this.element.removeEventListener('error', onError);
       _this.removeGlobalListeners();
-      console.warn('Video didn\'t load: ', e.error);
+      console.warn('Video didn\'t load: ', e.error, '\nShowing fallback instead.');
     };
 
     _this.element.addEventListener('error', onError, false);
@@ -120,10 +120,12 @@ var Video = function (_ElementController) {
       _this.videoRatio = (_this.videoWidth / _this.videoHeight).toFixed(2);
 
       // set the resize event
-      _this.resize();
-      _this.addGlobalListener(window, 'resize', function () {
+      if (_this.options.fullscreen) {
         _this.resize();
-      });
+        _this.addGlobalListener(window, 'resize', function () {
+          _this.resize();
+        });
+      }
 
       // add classes
       _wtcUtilityHelpers2.default.addClass('is-loaded', _this.wrapper);
@@ -140,6 +142,17 @@ var Video = function (_ElementController) {
     return _ret2 = _this, _possibleConstructorReturn(_this, _ret2);
   }
 
+  /**
+   * Helper function to deal with global events
+   * adding and removing global events using these function
+   * helps avoid memory leaks.
+   * @param {DOMNode}  obj        The element to attach the event, usually window
+   * @param {String}  evt        The event name
+   * @param {Function}  listener   The function to be called when the event fires
+   * @param {Boolean} useCapture Same as the original addEventListener
+   */
+
+
   _createClass(Video, [{
     key: 'addGlobalListener',
     value: function addGlobalListener(obj, evt, listener) {
@@ -153,6 +166,11 @@ var Video = function (_ElementController) {
       });
       obj.addEventListener(evt, listener, useCapture);
     }
+
+    /**
+     * Helper function to remove the added global events
+     */
+
   }, {
     key: 'removeGlobalListeners',
     value: function removeGlobalListeners() {
@@ -160,6 +178,12 @@ var Video = function (_ElementController) {
         eventRef.obj.removeEventListener(eventRef.evt, eventRef.listener, eventRef.useCapture);
       });
     }
+
+    /**
+     * Show the video cover image.
+     * @param  {String} reason String to be added to the class on the wrapper
+     */
+
   }, {
     key: 'showFallback',
     value: function showFallback() {
@@ -167,6 +191,12 @@ var Video = function (_ElementController) {
 
       _wtcUtilityHelpers2.default.addClass('is-' + reson, this.wrapper);
     }
+
+    /**
+     * Resize the video based on the ratio
+     * @return {[type]} [description]
+     */
+
   }, {
     key: 'resize',
     value: function resize() {
@@ -211,16 +241,38 @@ var Video = function (_ElementController) {
         this.removeGlobalListeners();
       }
     }
+
+    /**
+     * Helper function to get the name of a tag
+     * @param  {DOMNode} el Element
+     * @return {String}     Tag name
+     */
+
   }], [{
     key: 'getTagName',
     value: function getTagName(el) {
       return el.tagName.toLowerCase();
     }
+
+    /**
+     * Check is passed element is a video
+     * @param  {DOMNode}  el Element
+     * @return {Boolean}     True if it's a video
+     */
+
   }, {
     key: 'isVideo',
     value: function isVideo(el) {
       return Video.getTagName(el) === 'video' ? true : false;
     }
+
+    /**
+     * Loads video and fire callback
+     * @param  {DOMNode}   item     Video
+     * @param  {Function} callback  Callback function
+     * @return {DOMNode}            Returns the passed video
+     */
+
   }, {
     key: 'preload',
     value: function preload(item, callback) {
@@ -242,6 +294,8 @@ var Video = function (_ElementController) {
       }
 
       videoTag.load();
+
+      return videoTag;
     }
   }]);
 
@@ -251,6 +305,3 @@ var Video = function (_ElementController) {
 _wtcControllerElement.ExecuteControllers.registerController(Video, 'Video');
 
 exports.default = Video;
-
-
-_wtcControllerElement.ExecuteControllers.instanciateAll();

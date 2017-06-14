@@ -1,6 +1,6 @@
 {
   "name": "wtc-controller-video",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A class to handle the different browser support for videos, specially fullscreen ambient videos.",
   "main": "dist/wtc-controller-video.js",
   "style": "dist/wtc-controller-video.css",
